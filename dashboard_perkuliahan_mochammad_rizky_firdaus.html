@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Perkuliahan - Mochammad Rizky Firdaus</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen pb-12">
+
+    <!-- NAVIGATION BAR -->
+    <nav class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-sky-500 text-white p-2 rounded-lg font-bold text-lg leading-none">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="text-sm font-semibold leading-tight">Dashboard Akademik</h1>
+                    <p class="text-xs text-slate-400">Teknik Informatika</p>
+                </div>
+            </div>
+            <button onclick="toggleModal('modalGuide')" class="bg-sky-600 hover:bg-sky-500 text-xs text-white px-3 py-2 rounded-lg flex items-center gap-1.5 transition font-medium shadow-sm">
+                <i class="fa-brands fa-github text-sm"></i>
+                <span>Cara Hosting di GitHub</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-4xl mx-auto px-4 pt-6 space-y-6">
+
+        <!-- PROFILE HEADER CARD (MAHASISWA INFO) -->
+        <section class="bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 text-white rounded-2xl p-5 sm:p-6 shadow-xl relative overflow-hidden border border-slate-700/50">
+            <div class="absolute -right-6 -bottom-6 opacity-10 text-white text-9xl pointer-events-none">
+                <i class="fa-solid fa-laptop-code"></i>
+            </div>
+            <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-sky-500/20 border border-sky-400/30 flex items-center justify-center text-sky-400 text-2xl sm:text-3xl font-bold shadow-inner shrink-0">
+                    MRF
+                </div>
+                <div class="space-y-1 flex-1 w-full">
+                    <div class="inline-block px-2.5 py-0.5 rounded-full text-xs font-medium bg-sky-500/20 text-sky-300 border border-sky-500/30 mb-1">
+                        Mahasiswa Aktif
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold tracking-tight">Mochammad Rizky Firdaus</h2>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs sm:text-sm text-slate-300 pt-3 border-t border-slate-700/60 mt-3">
+                        <div>
+                            <span class="text-slate-400 block text-[10px] uppercase tracking-wider font-semibold">NIM</span>
+                            <span class="font-semibold text-white">240511051</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 block text-[10px] uppercase tracking-wider font-semibold">Kelas</span>
+                            <span class="font-semibold text-white">TI24B</span>
+                        </div>
+                        <div class="col-span-2 sm:col-span-1">
+                            <span class="text-slate-400 block text-[10px] uppercase tracking-wider font-semibold">Program Studi</span>
+                            <span class="font-semibold text-sky-400">Teknik Informatika</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATS & QUICK ACTIONS -->
+        <section class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-3">
+                <div class="p-3 bg-blue-50 text-blue-600 rounded-lg">
+                    <i class="fa-solid fa-list-check text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-500 font-medium">Total Tugas</p>
+                    <h3 id="statTugas" class="text-lg font-bold text-slate-800">0</h3>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-3">
+                <div class="p-3 bg-emerald-50 text-emerald-600 rounded-lg">
+                    <i class="fa-solid fa-book-open text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-500 font-medium">Total Materi</p>
+                    <h3 id="statMateri" class="text-lg font-bold text-slate-800">0</h3>
+                </div>
+            </div>
+            <div class="col-span-2 sm:col-span-1 bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-xs text-slate-500 font-medium">Status Data</p>
+                    <span class="inline-flex items-center gap-1.5 text-xs text-emerald-600 font-semibold mt-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> LocalStorage Aktif
+                    </span>
+                </div>
+                <button onclick="exportData()" title="Backup Data JSON" class="text-slate-500 hover:text-slate-700 p-2 text-sm bg-slate-100 hover:bg-slate-200 rounded-lg transition">
+                    <i class="fa-solid fa-download me-1"></i> <span class="text-xs font-medium">Export</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- FORM ENTRY (TAMBAH TUGAS / MATERI) -->
+        <section class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+            <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
+                <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle text-sky-600"></i> Tambah Tugas / Materi Baru
+                </h3>
+                <span class="text-xs text-slate-400">Pengumpulan Mandiri</span>
+            </div>
+
+            <form id="addItemForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <!-- Kategori (Tugas / Materi) -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Kategori <span class="text-red-500">*</span></label>
+                        <select id="itemCategory" required class="w-full text-sm bg-slate-50 border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                            <option value="Tugas">Tugas Kuliah</option>
+                            <option value="Materi">Materi Perkuliahan</option>
+                        </select>
+                    </div>
+
+                    <!-- Keterangan Tugas / Judul -->
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Keterangan Tugas / Judul Materi <span class="text-red-500">*</span></label>
+                        <input type="text" id="itemTitle" required placeholder="Contoh: Tugas 1 atau Materi Pertemuan 1" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Link File / GitHub / Drive -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Link File / Repository / Drive (Opsional)</label>
+                        <input type="url" id="itemLink" placeholder="https://github.com/... atau Google Drive" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                    </div>
+
+                    <!-- Mata Kuliah (Opsional) -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Mata Kuliah / Topik</label>
+                        <input type="text" id="itemSubject" placeholder="Contoh: Pemrograman Web / Project System" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <!-- Deskripsi Tambahan -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Catatan / Deskripsi Singkat</label>
+                    <textarea id="itemDesc" rows="2" placeholder="Catatan tugas, tanggal deadline, atau ringkasan materi..." class="w-full text-sm bg-slate-50 border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-medium text-sm py-2.5 rounded-lg shadow-sm hover:shadow transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-save"></i> Simpan Ke Dashboard
+                </button>
+            </form>
+        </section>
+
+        <!-- FILTER & LIST DATA -->
+        <section class="space-y-4">
+            <!-- Filter & Title -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-folder-open text-amber-500"></i> Daftar Tugas & Materi
+                </h3>
+                
+                <!-- Filter Tabs -->
+                <div class="flex bg-slate-200/70 p-1 rounded-lg text-xs font-medium self-start sm:self-auto">
+                    <button onclick="setFilter('Semua')" id="filterSemua" class="filter-btn px-3 py-1.5 rounded-md bg-white text-slate-800 shadow-sm transition">Semua</button>
+                    <button onclick="setFilter('Tugas')" id="filterTugas" class="filter-btn px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition">Tugas</button>
+                    <button onclick="setFilter('Materi')" id="filterMateri" class="filter-btn px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition">Materi</button>
+                </div>
+            </div>
+
+            <!-- List Cards -->
+            <div id="itemList" class="space-y-3">
+                <!-- Data akan dipopulasi secara dinamis via JavaScript -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL GUIDE GITHUB PAGES -->
+    <div id="modalGuide" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 relative">
+            <button onclick="toggleModal('modalGuide')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-3">
+                <div class="p-3 bg-slate-900 text-white rounded-xl">
+                    <i class="fa-brands fa-github text-2xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-800 text-lg">Panduan Online-kan Website via GitHub Pages</h3>
+                    <p class="text-xs text-slate-500">Agar bisa dibuka oleh dosen/teman dari HP mana saja</p>
+                </div>
+            </div>
+
+            <div class="space-y-4 text-sm text-slate-600">
+                <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800">
+                    <i class="fa-solid fa-circle-info me-1"></i> Website ini berbentuk single-file <b>index.html</b>. Ikuti petunjuk berikut untuk mempublikasikannya secara gratis.
+                </div>
+
+                <ol class="list-decimal list-inside space-y-3 font-normal">
+                    <li class="pl-2">
+                        <strong class="text-slate-800">Buat Akun GitHub:</strong> Jika belum punya, buat akun gratis di <a href="https://github.com" target="_blank" class="text-sky-600 underline">github.com</a>.
+                    </li>
+                    <li class="pl-2">
+                        <strong class="text-slate-800">Buat Repository Baru:</strong> 
+                        <ul class="list-disc list-inside pl-4 mt-1 text-xs space-y-1 text-slate-500">
+                            <li>Klik tombol **"+"** di pojok kanan atas -> pilih **New repository**.</li>
+                            <li>Isi Repository name, contoh: <code class="bg-slate-100 px-1 py-0.5 rounded text-slate-800 font-mono">dashboard-perkuliahan</code>.</li>
+                            <li>Pastikan memilih opsi **Public**.</li>
+                            <li>Klik tombol **Create repository**.</li>
+                        </ul>
+                    </li>
+                    <li class="pl-2">
+                        <strong class="text-slate-800">Upload File index.html:</strong>
+                        <ul class="list-disc list-inside pl-4 mt-1 text-xs space-y-1 text-slate-500">
+                            <li>Di halaman repository, klik link **"uploading an existing file"**.</li>
+                            <li>Simpan kode file ini di komputer/HP Anda dengan nama persis <code class="bg-slate-100 px-1 py-0.5 rounded text-slate-800 font-mono">index.html</code>.</li>
+                            <li>Drag & drop atau unggah file <code class="bg-slate-100 px-1 py-0.5 rounded text-slate-800 font-mono">index.html</code> tersebut.</li>
+                            <li>Klik tombol **Commit changes**.</li>
+                        </ul>
+                    </li>
+                    <li class="pl-2">
+                        <strong class="text-slate-800">Aktifkan GitHub Pages:</strong>
+                        <ul class="list-disc list-inside pl-4 mt-1 text-xs space-y-1 text-slate-500">
+                            <li>Masuk ke menu **Settings** di baris atas repository.</li>
+                            <li>Klik tab **Pages** di menu bagian kiri.</li>
+                            <li>Pada bagian *Build and deployment* -> *Branch*, ubah dari **None** ke **main** (atau **master**).</li>
+                            <li>Klik **Save**.</li>
+                        </ul>
+                    </li>
+                    <li class="pl-2">
+                        <strong class="text-slate-800">Selesai! Link Website Publik Anda:</strong>
+                        <p class="mt-1 text-xs text-slate-500">Tunggu 1-2 menit, lalu website Anda dapat diakses di link berikut:</p>
+                        <code class="block bg-slate-900 text-sky-300 p-2.5 rounded text-xs font-mono mt-1 break-all">
+                            https://[username-github-anda].github.io/dashboard-perkuliahan/
+                        </code>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="mt-6 pt-3 border-t border-slate-100 flex justify-end">
+                <button onclick="toggleModal('modalGuide')" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium px-4 py-2 rounded-lg">
+                    Tutup Panduan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION TOAST -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-slate-900 text-white text-xs px-4 py-3 rounded-xl shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2 z-50">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
+        <span id="toastMsg">Berhasil menyimpan data!</span>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const STORAGE_KEY = 'mrf_dashboard_perkuliahan_data';
+
+        // Sample Data awal
+        const initialData = [
+            {
+                id: '1',
+                category: 'Tugas',
+                title: 'Tugas Pertemuan Pertama',
+                subject: 'Project System',
+                desc: '1. Pembuatan Akun Google Scholar, Mendeley, Zotero\n2. Install Publish or Perish\n3. Pembuatan Website Portofolio',
+                link: 'https://github.com/',
+                date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+            }
+        ];
+
+        let currentFilter = 'Semua';
+
+        window.onload = function() {
+            if (!localStorage.getItem(STORAGE_KEY)) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(initialData));
+            }
+            renderData();
+        };
+
+        function getData() {
+            try {
+                return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const category = document.getElementById('itemCategory').value;
+            const title = document.getElementById('itemTitle').value.trim();
+            const link = document.getElementById('itemLink').value.trim();
+            const subject = document.getElementById('itemSubject').value.trim();
+            const desc = document.getElementById('itemDesc').value.trim();
+
+            if (!title) return;
+
+            const newItem = {
+                id: Date.now().toString(),
+                category,
+                title,
+                link,
+                subject: subject || 'Umum',
+                desc: desc || '-',
+                date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+            };
+
+            const data = getData();
+            data.unshift(newItem);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+            document.getElementById('addItemForm').reset();
+            
+            showToast('Data berhasil disimpan ke dashboard!');
+            renderData();
+        }
+
+        function deleteItem(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus item ini?')) {
+                let data = getData();
+                data = data.filter(item => item.id !== id);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                showToast('Item berhasil dihapus');
+                renderData();
+            }
+        }
+
+        function renderData() {
+            const data = getData();
+            const listContainer = document.getElementById('itemList');
+            
+            const totalTugas = data.filter(i => i.category === 'Tugas').length;
+            const totalMateri = data.filter(i => i.category === 'Materi').length;
+            document.getElementById('statTugas').innerText = totalTugas;
+            document.getElementById('statMateri').innerText = totalMateri;
+
+            const filteredData = data.filter(item => {
+                if (currentFilter === 'Semua') return true;
+                return item.category === currentFilter;
+            });
+
+            if (filteredData.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="bg-white rounded-xl p-8 text-center border border-slate-200">
+                        <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-slate-400 mb-2">
+                            <i class="fa-solid fa-folder-open text-xl"></i>
+                        </div>
+                        <p class="text-sm font-medium text-slate-600">Belum ada data ${currentFilter !== 'Semua' ? currentFilter : ''}</p>
+                        <p class="text-xs text-slate-400 mt-1">Gunakan form di atas untuk menambah data baru.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            listContainer.innerHTML = filteredData.map(item => {
+                const isTugas = item.category === 'Tugas';
+                const badgeColor = isTugas 
+                    ? 'bg-blue-50 text-blue-700 border-blue-200' 
+                    : 'bg-emerald-50 text-emerald-700 border-emerald-200';
+                
+                const icon = isTugas ? 'fa-clipboard-list text-blue-500' : 'fa-book-bookmark text-emerald-500';
+
+                return `
+                    <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm hover:shadow-md transition space-y-3">
+                        <div class="flex items-start justify-between gap-3">
+                            <div class="flex items-start gap-3">
+                                <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-100 mt-0.5">
+                                    <i class="fa-solid ${icon} text-lg"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1 flex-wrap">
+                                        <span class="text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-md border ${badgeColor}">
+                                            ${item.category}
+                                        </span>
+                                        <span class="text-xs text-slate-400 font-medium">
+                                            <i class="fa-regular fa-clock me-1"></i>${item.date}
+                                        </span>
+                                        <span class="text-xs text-slate-500 font-medium bg-slate-100 px-2 py-0.5 rounded-md">
+                                            ${item.subject}
+                                        </span>
+                                    </div>
+                                    <h4 class="font-bold text-slate-800 text-sm sm:text-base leading-snug">${escapeHtml(item.title)}</h4>
+                                </div>
+                            </div>
+
+                            <button onclick="deleteItem('${item.id}')" title="Hapus" class="text-slate-300 hover:text-red-500 transition p-1 text-sm">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+
+                        ${item.desc && item.desc !== '-' ? `
+                            <p class="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-lg border border-slate-100 whitespace-pre-line leading-relaxed">
+                                ${escapeHtml(item.desc)}
+                            </p>
+                        ` : ''}
+
+                        ${item.link ? `
+                            <div class="pt-1">
+                                <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-semibold text-sky-600 hover:text-sky-800 hover:underline bg-sky-50 px-3 py-1.5 rounded-lg border border-sky-100 transition">
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Buka Link / File Tugas
+                                </a>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-slate-800', 'shadow-sm');
+                btn.classList.add('text-slate-600');
+            });
+            
+            const activeBtn = document.getElementById(`filter${filter}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-white', 'text-slate-800', 'shadow-sm');
+                activeBtn.classList.remove('text-slate-600');
+            }
+
+            renderData();
+        }
+
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.toggle('hidden');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function exportData() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `backup_tugas_mrf_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            showToast('Backup data berhasil diunduh!');
+        }
+
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
